@@ -26,7 +26,7 @@ A robust and efficient web application designed to streamline the leave manageme
 
 - **Backend**: Python 3.10+, Django 6.0
 - **Database**: PostgreSQL (Production-ready)
-- **Frontend**: HTML5, CSS3, JavaScript, Django Templates
+- **Frontend**: HTML5, CSS3, Bootstrap 5, JavaScript, Django Templates
 - **PDF Generation**: xhtml2pdf
 - **Utilities**: Python Decouple (for env vars), Pillow
 
