@@ -53,6 +53,7 @@
                             <th>Dates</th>
                             <th>Status</th>
                             <th>Duration</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -69,6 +70,14 @@
                                 </span>
                             </td>
                             <td>{{ req.duration_days }} days</td>
+                            <td>
+                                {% if req.status == 'APPROVED' %}
+                                <a href="{% url 'download_permission_letter' req.id %}"
+                                    class="btn btn-sm btn-outline-primary">Download Letter</a>
+                                {% else %}
+                                <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
                         </tr>
                         {% empty %}
                         <tr>
