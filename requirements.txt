@@ -1,0 +1,4 @@
+Django==6.0.1
+xhtml2pdf
+psycopg2
+Pillow
