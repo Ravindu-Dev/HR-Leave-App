@@ -1,32 +1,81 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card p-4">
-            <h3 class="text-center mb-4">Register Employee</h3>
-            <form method="post">
-                {% csrf_token %}
+<div class="row justify-content-center mt-4 mb-5">
+    <div class="col-12 col-md-8 col-lg-6">
+        <div class="card">
+            <div class="card-header bg-white text-center py-4 border-0">
+                <h3 class="fw-bold text-dark mb-1">Create Account</h3>
+                <p class="text-muted small mb-0">Join the Smart Leave System today</p>
+            </div>
+            <div class="card-body px-4 pb-4">
+                <form method="post">
+                    {% csrf_token %}
 
-                {% for field in form %}
-                <div class="mb-3">
-                    <label class="form-label">{{ field.label }}</label>
-                    {{ field }}
-                    {% if field.errors %}
-                    <div class="text-danger small">{{ field.errors }}</div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold small text-muted">First Name</label>
+                            {{ form.first_name }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold small text-muted">Last Name</label>
+                            {{ form.last_name }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small text-muted">Username</label>
+                        {{ form.username }}
+                        <div class="form-text small">{{ form.username.help_text }}</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small text-muted">Email Address</label>
+                        {{ form.email }}
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold small text-muted">Department</label>
+                            {{ form.department }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold small text-muted">Job Title</label>
+                            {{ form.job_title }}
+                        </div>
+                    </div>
+
+                    <!-- Role hidden or shown depending on logic, strict render here -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small text-muted">Role</label>
+                        {{ form.role }}
+                    </div>
+
+                    <!-- Password fields handled by form iteration usually, but for manual layout: -->
+                    <!-- We iterate rest of hidden or specific fields to be safe if form changes -->
+                    {% for field in form %}
+                    {% if field.name not in 'first_name last_name username email department job_title role' %}
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small text-muted">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}
+                        <div class="form-text small opacity-75">{{ field.help_text|safe }}</div>
+                        {% endif %}
+                        {% if field.errors %}
+                        <div class="text-danger small mt-1">{{ field.errors.0 }}</div>
+                        {% endif %}
+                    </div>
                     {% endif %}
-                </div>
-                {% endfor %}
+                    {% endfor %}
 
-                <!-- Manual hack to add Bootstrap classes to Django form (or use a library like widget-tweaks) -->
-                <script>
-                    document.querySelectorAll('input, select').forEach(e => e.classList.add('form-control'));
-                </script>
-
-                <button type="submit" class="btn btn-success w-100">Register</button>
-            </form>
-            <div class="mt-3 text-center">
-                <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg">Register</button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer bg-white border-0 text-center pb-4">
+                <p class="small text-muted mb-0">Already registered? <a href="{% url 'login' %}"
+                        class="fw-bold text-decoration-none">Login here</a></p>
             </div>
         </div>
     </div>

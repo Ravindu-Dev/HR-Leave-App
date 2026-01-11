@@ -1,91 +1,149 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
-<div class="row">
-    <div class="col-12 mb-4">
-        <h2>My Dashboard</h2>
+<!-- Page Header -->
+<div class="d-flex justify-content-between align-items-center mb-4 page-header">
+    <div>
+        <h2 class="page-title">My Dashboard</h2>
+        <p class="page-subtitle">Overview of your leave status and recent activities.</p>
+    </div>
+    <div>
+        <span class="badge bg-white text-dark border px-3 py-2 rounded-pill fw-normal">
+            <i class="bi bi-calendar-check me-2 text-primary"></i> {% now "F j, Y" %}
+        </span>
     </div>
 </div>
 
 <!-- Balance Cards -->
-<div class="row mb-5">
+<div class="row g-4 mb-5">
     {% for balance in balances %}
     <div class="col-md-4">
-        <div class="card bg-light">
-            <div class="card-body text-center">
-                <h5 class="card-title text-muted">{{ balance.get_leave_type_display }}</h5>
-                <h2 class="display-4">{{ balance.balance_days }}</h2>
-                <p class="card-text">Days Available</p>
+        <div class="card h-100 border-0 shadow-sm position-relative overflow-hidden">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="text-uppercase fw-bold text-muted small mb-1">{{ balance.get_leave_type_display }}</p>
+                        <h2 class="display-5 fw-bold mb-0 text-dark">{{ balance.balance_days }}</h2>
+                        <span class="badge bg-light text-secondary mt-2 rounded-pill">Days Remaining</span>
+                    </div>
+                    <div class="p-3 rounded-3 bg-opacity-10 
+                            {% if balance.leave_type == 'SICK' %}bg-danger text-danger
+                            {% elif balance.leave_type == 'CASUAL' %}bg-warning text-warning
+                            {% else %}bg-success text-success{% endif %}">
+                        <i class="bi 
+                                {% if balance.leave_type == 'SICK' %}bi-bandaid-fill
+                                {% elif balance.leave_type == 'CASUAL' %}bi-cup-hot-fill
+                                {% else %}bi-luggage-fill{% endif %} fs-4"></i>
+                    </div>
+                </div>
+            </div>
+            <!-- Decorative bottom border -->
+            <div class="position-absolute bottom-0 start-0 w-100"
+                style="height: 4px; 
+                    background: {% if balance.leave_type == 'SICK' %}#dc3545{% elif balance.leave_type == 'CASUAL' %}#ffc107{% else %}#198754{% endif %};">
             </div>
         </div>
     </div>
     {% empty %}
     <div class="col-12">
-        <div class="alert alert-warning">No leave balances found. Please contact HR.</div>
+        <div class="alert alert-info">No leave balances found. Please contact HR to set up your profile.</div>
     </div>
     {% endfor %}
 </div>
 
-<div class="row">
-    <!-- Leave Application Form -->
-    <div class="col-md-5">
-        <div class="card">
-            <div class="card-header bg-primary text-white">Apply for Leave</div>
-            <div class="card-body">
+<div class="row g-4">
+    <!-- Application Form -->
+    <div class="col-lg-4">
+        <div class="card h-100">
+            <div class="card-header border-0 pb-0 pt-4 px-4 bg-white">
+                <h5 class="card-title fw-bold">Apply for Leave</h5>
+                <p class="text-muted small">Submit a new request for approval.</p>
+            </div>
+            <div class="card-body px-4 pb-4">
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
-                    {{ form.as_p }}
-                    <button type="submit" class="btn btn-primary w-100">Submit Request</button>
+                    {% for field in form %}
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small text-muted">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                        <div class="text-danger small mt-1">{{ field.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-send-fill me-2"></i> Submit Request
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- Recent Requests -->
-    <div class="col-md-7">
-        <div class="card">
-            <div class="card-header">Recent Requests</div>
-            <div class="card-body">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Type</th>
-                            <th>Dates</th>
-                            <th>Status</th>
-                            <th>Duration</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for req in requests %}
-                        <tr>
-                            <td>{{ req.get_leave_type_display }}</td>
-                            <td>{{ req.start_date }} to {{ req.end_date }}</td>
-                            <td>
-                                <span class="badge 
-                                    {% if req.status == 'APPROVED' %}bg-success
-                                    {% elif req.status == 'REJECTED' %}bg-danger
-                                    {% else %}bg-warning{% endif %}">
-                                    {{ req.get_status_display }}
-                                </span>
-                            </td>
-                            <td>{{ req.duration_days }} days</td>
-                            <td>
-                                {% if req.status == 'APPROVED' %}
-                                <a href="{% url 'download_permission_letter' req.id %}"
-                                    class="btn btn-sm btn-outline-primary">Download Letter</a>
-                                {% else %}
-                                <span class="text-muted">-</span>
-                                {% endif %}
-                            </td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="4" class="text-center">No leave history.</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+    <!-- Recent History -->
+    <div class="col-lg-8">
+        <div class="card h-100">
+            <div class="card-header border-0 pb-0 pt-4 px-4 bg-white d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="card-title fw-bold">Leave History</h5>
+                    <p class="text-muted small">Track the status of your recent requests.</p>
+                </div>
+            </div>
+            <div class="card-body px-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0" style="min-width: 600px;">
+                        <thead class="bg-light">
+                            <tr>
+                                <th class="ps-4 text-muted small text-uppercase">Type</th>
+                                <th class="text-muted small text-uppercase">Dates</th>
+                                <th class="text-muted small text-uppercase">Status</th>
+                                <th class="text-muted small text-uppercase">Duration</th>
+                                <th class="pe-4 text-end text-muted small text-uppercase">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for req in requests %}
+                            <tr>
+                                <td class="ps-4 fw-medium">{{ req.get_leave_type_display }}</td>
+                                <td>
+                                    <div class="d-flex flex-column">
+                                        <span class="fw-semibold text-dark">{{ req.start_date|date:"M d" }}</span>
+                                        <span class="small text-muted">to {{ req.end_date|date:"M d, Y" }}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span
+                                        class="badge rounded-pill border px-3 py-2 
+                                        {% if req.status == 'APPROVED' %}bg-success-subtle text-success border-success-subtle
+                                        {% elif req.status == 'REJECTED' %}bg-danger-subtle text-danger border-danger-subtle
+                                        {% else %}bg-warning-subtle text-warning-emphasis border-warning-subtle{% endif %}">
+                                        {{ req.get_status_display }}
+                                    </span>
+                                </td>
+                                <td class="text-muted">{{ req.duration_days }} days</td>
+                                <td class="pe-4 text-end">
+                                    {% if req.status == 'APPROVED' %}
+                                    <a href="{% url 'download_permission_letter' req.id %}"
+                                        class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                                        <i class="bi bi-download me-1"></i> Letter
+                                    </a>
+                                    {% else %}
+                                    <span class="text-muted small">-</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center py-5 text-muted">
+                                    <i class="bi bi-inbox fs-3 d-block mb-2 opacity-50"></i>
+                                    No Requests Found
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

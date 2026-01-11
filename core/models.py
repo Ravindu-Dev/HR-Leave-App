@@ -13,6 +13,8 @@ class User(AbstractUser):
         ('MANAGER', 'Manager'),
     )
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='EMPLOYEE')
+    department = models.CharField(max_length=100, blank=True, null=True)
+    job_title = models.CharField(max_length=100, blank=True, null=True)
 
     def is_manager(self):
         return self.role == 'MANAGER'

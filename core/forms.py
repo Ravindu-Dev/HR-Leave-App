@@ -5,7 +5,7 @@ from .models import User, LeaveRequest, LeaveBalance
 class RegisterForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ['username', 'first_name', 'last_name', 'email', 'role']
+        fields = ['username', 'first_name', 'last_name', 'email', 'department', 'job_title', 'role']
     
     def save(self, commit=True):
         user = super().save(commit=False)
