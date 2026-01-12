@@ -14,6 +14,9 @@
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
+    <!-- Premium UI CSS -->
+    <link rel="stylesheet" href="/static/premium/premium.css">
+
     <style>
         :root {
             --bs-font-sans-serif: 'Inter', sans-serif;
@@ -28,12 +31,15 @@
 
         body {
             font-family: var(--bs-font-sans-serif);
-            background-color: var(--bg-color);
-            color: #1f2937;
-            /* Dark Slate */
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            animation: premiumFadeIn 1.2s cubic-bezier(.77,0,.18,1) both;
+        }
+
+        @keyframes premiumFadeIn {
+            0% { opacity: 0; transform: translateY(24px) scale(0.98); }
+            100% { opacity: 1; transform: none; }
         }
 
         /* Navbar */

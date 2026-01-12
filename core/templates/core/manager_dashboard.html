@@ -6,23 +6,23 @@
         <h2 class="page-title">Manager Dashboard</h2>
         <p class="page-subtitle">Oversee team leave requests and manage approvals.</p>
     </div>
-    <a href="{% url 'calendar' %}" class="btn btn-primary shadow-sm hover-lift">
+    <a href="{% url 'calendar' %}" class="btn btn-primary shadow hover-lift">
         <i class="bi bi-calendar-week me-2"></i> Team Calendar
     </a>
 </div>
 
 <div class="card border-0 shadow-sm">
-    <div class="card-header bg-white border-0 py-4 px-4">
+    <div class="card-header bg-white border-0 py-4 px-4 premium-glass">
         <div class="d-flex justify-content-between align-items-center">
-            <h5 class="fw-bold mb-0">Pending Approvals</h5>
-            <span class="badge bg-primary-subtle text-primary rounded-pill px-3">
+            <h5 class="fw-bold mb-0 page-title">Pending Approvals</h5>
+            <span class="badge premium-badge rounded-pill px-3 shadow">
                 {{ requests|length }} Request(s)
             </span>
         </div>
     </div>
-    <div class="card-body p-0">
+    <div class="card-body p-0 premium-glass">
         <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
+            <table class="table table-hover align-middle mb-0 premium-table">
                 <thead class="bg-light">
                     <tr>
                         <th class="ps-4 text-muted small text-uppercase py-3">Employee</th>
@@ -39,7 +39,7 @@
                     <tr>
                         <td class="ps-4">
                             <div class="d-flex align-items-center">
-                                <div class="bg-primary-subtle text-primary rounded-circle d-flex align-items-center justify-content-center me-3"
+                                <div class="bg-primary-subtle text-primary rounded-circle d-flex align-items-center justify-content-center me-3 shadow"
                                     style="width: 40px; height: 40px; font-weight: bold;">
                                     {{ req.user.username|slice:":1"|upper }}
                                 </div>
@@ -56,8 +56,7 @@
                             </div>
                         </td>
                         <td>
-                            <span class="badge bg-light text-dark border fw-normal">{{ req.get_leave_type_display
-                                }}</span>
+                            <span class="badge premium-badge">{{ req.get_leave_type_display }}</span>
                         </td>
                         <td>
                             <div class="small fw-semibold text-dark">{{ req.start_date|date:"M d" }}</div>

@@ -3,35 +3,33 @@
 {% block content %}
 <div class="row justify-content-center align-items-center" style="min-height: 70vh;">
     <div class="col-12 col-md-5 col-lg-4">
-        <div class="card p-3">
+        <div class="card p-3 shadow-lg border-0 premium-glass">
             <div class="card-body">
                 <div class="text-center mb-4">
-                    <h3 class="fw-bold text-dark">Welcome Back</h3>
+                    <h3 class="fw-bold text-dark page-title">Welcome Back</h3>
                     <p class="text-muted small">Enter your credentials to access your dashboard</p>
                 </div>
-
-                <form method="post">
+                <form method="post" autocomplete="off">
                     {% csrf_token %}
                     {% for field in form %}
                     <div class="mb-3">
-                        <label class="form-label fw-semibold small text-uppercase text-muted">{{ field.label }}</label>
+                        <label class="form-label">{{ field.label }}</label>
                         {{ field }}
                         {% if field.errors %}
-                        <div class="text-danger small mt-1">
+                        <div class="alert alert-danger mt-2 py-2 px-3">
                             <i class="bi bi-exclamation-circle me-1"></i> {{ field.errors.0 }}
                         </div>
                         {% endif %}
                     </div>
                     {% endfor %}
-
                     <div class="d-grid mt-4">
-                        <button type="submit" class="btn btn-primary btn-lg">Sign In</button>
+                        <button type="submit" class="btn btn-primary btn-lg shadow">Sign In</button>
                     </div>
                 </form>
             </div>
-            <div class="card-footer bg-white border-0 text-center pb-3">
+            <div class="card-footer bg-white border-0 text-center pb-3 premium-glass">
                 <p class="small text-muted mb-0">Don't have an account? <a href="{% url 'register' %}"
-                        class="fw-bold text-decoration-none">Create Account</a></p>
+                        class="fw-bold">Create Account</a></p>
             </div>
         </div>
     </div>

@@ -2,22 +2,22 @@
 
 {% block content %}
 <div class="mb-4">
-    <a href="{% url 'manager_dashboard' %}" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+    <a href="{% url 'manager_dashboard' %}" class="btn btn-outline-secondary btn-sm rounded-pill px-3 shadow">
         <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
     </a>
 </div>
 
 <div class="card shadow border-0">
-    <div class="card-header bg-white py-4 px-4 d-flex justify-content-between align-items-center">
+    <div class="card-header bg-white py-4 px-4 d-flex justify-content-between align-items-center premium-glass">
         <div>
-            <h5 class="fw-bold mb-1">Team Calendar</h5>
+            <h5 class="fw-bold mb-1 page-title">Team Calendar</h5>
             <p class="text-muted small mb-0">Visual overview of team availability</p>
         </div>
-        <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-3 py-2 rounded-pill">
+        <span class="badge premium-badge px-3 py-2 rounded-pill shadow">
             <i class="bi bi-circle-fill me-1 small"></i> Away / On Leave
         </span>
     </div>
-    <div class="card-body p-4">
+    <div class="card-body p-4 premium-glass">
         <div id="calendar" style="height: 650px;"></div>
     </div>
 </div>
@@ -50,14 +50,18 @@
 <style>
     /* Force Premium Style on Calendar Buttons */
     .fc .fc-button-primary {
-        background-color: var(--primary-color) !important;
-        border-color: var(--primary-color) !important;
+        background: var(--premium-gradient) !important;
+        border: none !important;
+        color: #fff !important;
+        box-shadow: 0 2px 8px rgba(44, 62, 80, 0.12);
+        font-weight: 600;
+        letter-spacing: 0.02em;
         opacity: 1;
     }
 
     .fc .fc-button-primary:hover {
-        background-color: var(--primary-dark) !important;
-        border-color: var(--primary-dark) !important;
+        background: linear-gradient(90deg, #1e40af 0%, #6d28d9 100%) !important;
+        border: none !important;
     }
 
     .fc .fc-button-active {

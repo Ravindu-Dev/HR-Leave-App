@@ -3,60 +3,51 @@
 {% block content %}
 <div class="row justify-content-center mt-4 mb-5">
     <div class="col-12 col-md-8 col-lg-6">
-        <div class="card">
-            <div class="card-header bg-white text-center py-4 border-0">
-                <h3 class="fw-bold text-dark mb-1">Create Account</h3>
+        <div class="card shadow-lg border-0 premium-glass">
+            <div class="card-header bg-white text-center py-4 border-0 premium-glass">
+                <h3 class="fw-bold text-dark mb-1 page-title">Create Account</h3>
                 <p class="text-muted small mb-0">Join the Smart Leave System today</p>
             </div>
             <div class="card-body px-4 pb-4">
-                <form method="post">
+                <form method="post" autocomplete="off">
                     {% csrf_token %}
-
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label class="form-label fw-semibold small text-muted">First Name</label>
+                            <label class="form-label">First Name</label>
                             {{ form.first_name }}
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label class="form-label fw-semibold small text-muted">Last Name</label>
+                            <label class="form-label">Last Name</label>
                             {{ form.last_name }}
                         </div>
                     </div>
-
                     <div class="mb-3">
-                        <label class="form-label fw-semibold small text-muted">Username</label>
+                        <label class="form-label">Username</label>
                         {{ form.username }}
                         <div class="form-text small">{{ form.username.help_text }}</div>
                     </div>
-
                     <div class="mb-3">
-                        <label class="form-label fw-semibold small text-muted">Email Address</label>
+                        <label class="form-label">Email Address</label>
                         {{ form.email }}
                     </div>
-
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label class="form-label fw-semibold small text-muted">Department</label>
+                            <label class="form-label">Department</label>
                             {{ form.department }}
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label class="form-label fw-semibold small text-muted">Job Title</label>
+                            <label class="form-label">Job Title</label>
                             {{ form.job_title }}
                         </div>
                     </div>
-
-                    <!-- Role hidden or shown depending on logic, strict render here -->
                     <div class="mb-3">
-                        <label class="form-label fw-semibold small text-muted">Role</label>
+                        <label class="form-label">Role</label>
                         {{ form.role }}
                     </div>
-
-                    <!-- Password fields handled by form iteration usually, but for manual layout: -->
-                    <!-- We iterate rest of hidden or specific fields to be safe if form changes -->
                     {% for field in form %}
                     {% if field.name not in 'first_name last_name username email department job_title role' %}
                     <div class="mb-3">
-                        <label class="form-label fw-semibold small text-muted">{{ field.label }}</label>
+                        <label class="form-label">{{ field.label }}</label>
                         {{ field }}
                         {% if field.help_text %}
                         <div class="form-text small opacity-75">{{ field.help_text|safe }}</div>
@@ -69,13 +60,13 @@
                     {% endfor %}
 
                     <div class="d-grid mt-4">
-                        <button type="submit" class="btn btn-primary btn-lg">Register</button>
+                        <button type="submit" class="btn btn-primary btn-lg shadow">Create Account</button>
                     </div>
                 </form>
             </div>
-            <div class="card-footer bg-white border-0 text-center pb-4">
+            <div class="card-footer bg-white border-0 text-center pb-4 premium-glass">
                 <p class="small text-muted mb-0">Already registered? <a href="{% url 'login' %}"
-                        class="fw-bold text-decoration-none">Login here</a></p>
+                        class="fw-bold">Login here</a></p>
             </div>
         </div>
     </div>
