@@ -75,6 +75,7 @@ def manager_dashboard_view(request):
     if not request.user.is_manager():
         return redirect('dashboard')
     
+    # HARDCODED: Filter for PENDING status to show only requests awaiting manager action
     pending_requests = LeaveRequest.objects.filter(status='PENDING').order_by('created_at')
     
     return render(request, 'core/manager_dashboard.html', {
@@ -87,7 +88,7 @@ def approve_leave(request, leave_id):
         return redirect('dashboard')
     
     leave_request = get_object_or_404(LeaveRequest, id=leave_id)
-    if leave_request.status == 'PENDING':
+    if leave_request.status == 'PENDING':  # HARDCODED: Only PENDING requests can be approved
         # Deduct Balance
         balance = LeaveBalance.objects.filter(user=leave_request.user, leave_type=leave_request.leave_type).first()
         duration = leave_request.duration_days()
@@ -96,7 +97,7 @@ def approve_leave(request, leave_id):
             balance.balance_days -= duration
             balance.save()
             
-            leave_request.status = 'APPROVED'
+            leave_request.status = 'APPROVED'  # HARDCODED: Set status to APPROVED after successful approval
             leave_request.save()
             
             # TODO: Email PDF to User
@@ -112,8 +113,8 @@ def reject_leave(request, leave_id):
         return redirect('dashboard')
     
     leave_request = get_object_or_404(LeaveRequest, id=leave_id)
-    if leave_request.status == 'PENDING':
-        leave_request.status = 'REJECTED'
+    if leave_request.status == 'PENDING':  # HARDCODED: Only PENDING requests can be rejected
+        leave_request.status = 'REJECTED'  # HARDCODED: Set status to REJECTED
         leave_request.save()
         messages.info(request, f'Leave for {leave_request.user.username} rejected.')
         
@@ -126,13 +127,13 @@ def download_permission_letter(request, leave_id):
     if not (request.user.is_manager() or request.user == leave_request.user):
         return redirect('dashboard')
     
-    if leave_request.status != 'APPROVED':
-        return HttpResponse("Letter only available for approved leaves.", status=403)
+    if leave_request.status != 'APPROVED':  # HARDCODED: Only APPROVED leaves can generate permission letters
+        return HttpResponse("Letter only available for approved leaves.", status=403)  # HARDCODED: HTTP 403 Forbidden
 
-    template_path = 'core/permission_letter_pdf.html'
+    template_path = 'core/permission_letter_pdf.html'  # HARDCODED: Template path for PDF generation
     context = {'leave': leave_request}
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = f'attachment; filename="permission_letter_{leave_id}.pdf"'
+    response['Content-Disposition'] = f'attachment; filename="permission_letter_{leave_id}.pdf"'  # HARDCODED: PDF filename pattern
     
     template = get_template(template_path)
     html = template.render(context)
@@ -146,12 +147,13 @@ def download_permission_letter(request, leave_id):
 def calendar_api(request):
     # Public team calendar or internal
     events = []
-    approved_leaves = LeaveRequest.objects.filter(status='APPROVED')
+    approved_leaves = LeaveRequest.objects.filter(status='APPROVED')  # HARDCODED: Only show APPROVED leaves on calendar
     for leave in approved_leaves:
         events.append({
             'title': f"{leave.user.first_name} ({leave.get_leave_type_display()})",
             'start': leave.start_date.isoformat(),
             'end': (leave.end_date).isoformat(), # FullCalendar is usually exclusive end, but simple view usually fine.
+            # HARDCODED: Calendar color scheme - green (#28a745) for ANNUAL leave, yellow (#ffc107) for others
             'color': '#28a745' if leave.leave_type == 'ANNUAL' else '#ffc107',
         })
     return JsonResponse(events, safe=False)

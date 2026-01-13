@@ -12,7 +12,9 @@ class RegisterForm(UserCreationForm):
         if commit:
             user.save()
             # Initialize leave balances for new employee
-            if user.role == 'EMPLOYEE':
+            if user.role == 'EMPLOYEE':  # HARDCODED: Only EMPLOYEE role gets leave balances (managers don't)
+                # HARDCODED: Initial leave balance allocations per year
+                # 10 days for sick leave, 12 days for casual leave, 15 days for annual leave
                 LeaveBalance.objects.create(user=user, leave_type='SICK', balance_days=10)
                 LeaveBalance.objects.create(user=user, leave_type='CASUAL', balance_days=12)
                 LeaveBalance.objects.create(user=user, leave_type='ANNUAL', balance_days=15)
@@ -25,6 +27,7 @@ class LeaveRequestForm(forms.ModelForm):
     class Meta:
         model = LeaveRequest
         fields = ['leave_type', 'start_date', 'end_date', 'reason', 'evidence']
+        # HARDCODED: Bootstrap CSS classes for consistent styling
         widgets = {
             'start_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'end_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
@@ -45,6 +48,7 @@ class LeaveRequestForm(forms.ModelForm):
                 raise forms.ValidationError("End date cannot be before start date.")
             
             duration = (end_date - start_date).days + 1
+            # HARDCODED: Sick leave exceeding 2 days requires medical evidence
             if leave_type == 'SICK' and duration > 2 and not evidence:
                 raise forms.ValidationError("Medical evidence is required for sick leave exceeding 2 days.")
         

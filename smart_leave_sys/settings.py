@@ -20,11 +20,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+# HARDCODED: This is a development secret key. In production, use environment variables (e.g., os.environ.get('SECRET_KEY'))
 SECRET_KEY = 'django-insecure-1ns_b-jrq_)ysa^5&*rll78+5n7q8#*sag1-u9@pt0%lmfb6cy'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# HARDCODED: Debug mode is enabled for development. Set to False in production
 DEBUG = True
 
+# HARDCODED: Empty list allows all hosts in DEBUG mode. In production, specify allowed domains (e.g., ['yourdomain.com'])
 ALLOWED_HOSTS = []
 
 
@@ -76,11 +79,11 @@ WSGI_APPLICATION = 'smart_leave_sys.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'smart_leave_db',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'NAME': 'smart_leave_db',  # HARDCODED: Database name for the leave management system
+        'USER': 'postgres',  # HARDCODED: Default PostgreSQL username. Use environment variables in production
+        'PASSWORD': 'postgres',  # HARDCODED: Default PostgreSQL password. NEVER commit real passwords! Use environment variables
+        'HOST': '127.0.0.1',  # HARDCODED: Localhost for development. Change to actual DB host in production
+        'PORT': '5432',  # HARDCODED: Default PostgreSQL port
     }
 }
 
@@ -107,9 +110,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en-us'  # HARDCODED: English (US) as default language
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'UTC'  # HARDCODED: UTC timezone. Consider changing to local timezone (e.g., 'Asia/Colombo') if needed
 
 USE_I18N = True
 
@@ -119,11 +122,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = 'static/'  # HARDCODED: URL prefix for static files
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = '/media/'  # HARDCODED: URL prefix for user-uploaded media files
+MEDIA_ROOT = BASE_DIR / 'media'  # HARDCODED: Directory path for storing uploaded files
 
 AUTH_USER_MODEL = 'core.User'
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # HARDCODED: Console backend for development. Use SMTP backend in production
