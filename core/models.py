@@ -45,15 +45,15 @@ class LeaveRequest(models.Model):
         ('APPROVED', 'Approved'),
         ('REJECTED', 'Rejected'),
     )
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='leave_requests')
-    start_date = models.DateField()
-    end_date = models.DateField()
-    leave_type = models.CharField(max_length=10, choices=LEAVE_TYPE_CHOICES)
-    reason = models.TextField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='leave_requests') # HARDCODED: Foreign key to User model
+    start_date = models.DateField() # HARDCODED: Start date of leave request
+    end_date = models.DateField() # HARDCODED: End date of leave request
+    leave_type = models.CharField(max_length=10, choices=LEAVE_TYPE_CHOICES) # HARDCODED: Type of leave (SICK, CASUAL, ANNUAL)
+    reason = models.TextField() # HARDCODED: Reason for leave request
     evidence = models.FileField(upload_to='evidence/', null=True, blank=True)  # HARDCODED: Upload path for evidence files
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='PENDING')  # HARDCODED: New requests start as PENDING
     manager_comment = models.TextField(null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True) # HARDCODED: Timestamp of request creation
 
     def duration_days(self):
         return (self.end_date - self.start_date).days + 1  # HARDCODED: +1 to make date range inclusive (both start and end dates count)
